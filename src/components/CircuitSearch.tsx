@@ -5,11 +5,12 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Alert, AlertDescription } from './ui/alert';
-import { Search, Zap, AlertCircle } from 'lucide-react';
+import { Search, Zap, AlertCircle, UserPlus } from 'lucide-react';
 import { Circuit } from '../pages/Index';
 
 interface CircuitSearchProps {
   onCircuitSelect: (circuit: Circuit) => void;
+  onRegisterClient: () => void;
 }
 
 // Mock data - in real app this would come from backend API
@@ -55,7 +56,7 @@ const mockCircuits: Circuit[] = [
   }
 ];
 
-export const CircuitSearch = ({ onCircuitSelect }: CircuitSearchProps) => {
+export const CircuitSearch = ({ onCircuitSelect, onRegisterClient }: CircuitSearchProps) => {
   const [circuitId, setCircuitId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -94,6 +95,16 @@ export const CircuitSearch = ({ onCircuitSelect }: CircuitSearchProps) => {
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Circuit Lookup</h2>
         <p className="text-slate-600">Enter a Circuit ID to view and manage circuit details</p>
+      </div>
+
+      <div className="flex justify-center mb-6">
+        <Button
+          onClick={onRegisterClient}
+          className="flex items-center space-x-2 bg-green-600 hover:bg-green-700"
+        >
+          <UserPlus className="h-4 w-4" />
+          <span>Register New Client</span>
+        </Button>
       </div>
 
       <Card className="shadow-lg border-slate-200">
