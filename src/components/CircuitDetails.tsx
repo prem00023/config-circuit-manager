@@ -29,6 +29,20 @@ export const CircuitDetails = ({ circuit, onBack, onUpdate }: CircuitDetailsProp
       case 'client_ip':
         const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
         if (!ipRegex.test(value)) return 'Invalid IP address format';
+        const parts = value.split('.');
+        if (parts.some(part => parseInt(part) > 255)) return 'IP address octets must be 0-255';
+        break;
+      case 'subnet':
+        const subnetRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+        if (!subnetRegex.test(value)) return 'Invalid subnet mask format';
+        const subnetParts = value.split('.');
+        if (subnetParts.some(part => parseInt(part) > 255)) return 'Subnet mask octets must be 0-255';
+        break;
+      case 'dns':
+        const dnsRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+        if (!dnsRegex.test(value)) return 'Invalid DNS server format';
+        const dnsParts = value.split('.');
+        if (dnsParts.some(part => parseInt(part) > 255)) return 'DNS server octets must be 0-255';
         break;
       case 'vlan':
         const vlanNum = parseInt(value);
@@ -66,8 +80,8 @@ export const CircuitDetails = ({ circuit, onBack, onUpdate }: CircuitDetailsProp
     
     const newErrors: Record<string, string> = {};
     
-    // Validate editable fields
-    const editableFields = ['client_name', 'vlan', 'bandwidth', 'location', 'mux_id', 'port_id'];
+    // Validate all editable fields including network configuration
+    const editableFields = ['client_name', 'vlan', 'bandwidth', 'location', 'mux_id', 'port_id', 'client_ip', 'subnet', 'dns'];
     editableFields.forEach(field => {
       const error = validateField(field, editedCircuit[field as keyof Circuit]);
       if (error) newErrors[field] = error;
@@ -224,12 +238,14 @@ export const CircuitDetails = ({ circuit, onBack, onUpdate }: CircuitDetailsProp
               <Wifi className="h-5 w-5 text-green-600" />
               <span>Network Configuration</span>
             </CardTitle>
-            <CardDescription>IP and DNS settings (Read-only)</CardDescription>
+            <CardDescription>
+              {isEditing ? 'IP and DNS settings (Editable)' : 'IP and DNS settings'}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {renderField('Client IP Address', 'client_ip', <span className="w-4 h-4 bg-blue-100 rounded text-xs flex items-center justify-center">IP</span>, false)}
-            {renderField('Subnet Mask', 'subnet', <span className="w-4 h-4 bg-orange-100 rounded text-xs flex items-center justify-center">S</span>, false)}
-            {renderField('DNS Server', 'dns', <span className="w-4 h-4 bg-green-100 rounded text-xs flex items-center justify-center">D</span>, false)}
+            {renderField('Client IP Address', 'client_ip', <span className="w-4 h-4 bg-blue-100 rounded text-xs flex items-center justify-center">IP</span>, true)}
+            {renderField('Subnet Mask', 'subnet', <span className="w-4 h-4 bg-orange-100 rounded text-xs flex items-center justify-center">S</span>, true)}
+            {renderField('DNS Server', 'dns', <span className="w-4 h-4 bg-green-100 rounded text-xs flex items-center justify-center">D</span>, true)}
           </CardContent>
         </Card>
 
