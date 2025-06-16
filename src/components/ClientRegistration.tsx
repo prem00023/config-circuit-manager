@@ -20,6 +20,7 @@ export const ClientRegistration = ({ onBack, onRegister }: ClientRegistrationPro
     client_name: '',
     client_ip: '',
     subnet: '',
+    gateway: '',
     dns: '',
     vlan: '',
     bandwidth: '',
@@ -41,6 +42,7 @@ export const ClientRegistration = ({ onBack, onRegister }: ClientRegistrationPro
         if (value.length < 2) return 'Client name must be at least 2 characters';
         break;
       case 'client_ip':
+      case 'gateway':
         const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
         if (!ipRegex.test(value)) return 'Invalid IP address format';
         break;
@@ -218,11 +220,12 @@ export const ClientRegistration = ({ onBack, onRegister }: ClientRegistrationPro
                 <Wifi className="h-5 w-5 text-green-600" />
                 <span>Network Configuration</span>
               </CardTitle>
-              <CardDescription>IP and DNS settings</CardDescription>
+              <CardDescription>IP, DNS and Gateway settings</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {renderField('Client IP Address', 'client_ip', <span className="w-4 h-4 bg-blue-100 rounded text-xs flex items-center justify-center">IP</span>, 'e.g., 192.168.1.100')}
               {renderField('Subnet Mask', 'subnet', <span className="w-4 h-4 bg-orange-100 rounded text-xs flex items-center justify-center">S</span>, 'e.g., 255.255.255.0')}
+              {renderField('Gateway', 'gateway', <span className="w-4 h-4 bg-purple-100 rounded text-xs flex items-center justify-center">G</span>, 'e.g., 192.168.1.1')}
               {renderField('DNS Server', 'dns', <span className="w-4 h-4 bg-green-100 rounded text-xs flex items-center justify-center">D</span>, 'e.g., 8.8.8.8')}
             </CardContent>
           </Card>
