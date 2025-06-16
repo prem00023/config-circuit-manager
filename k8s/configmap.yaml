@@ -1,0 +1,9 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: circuit-management-config
+  namespace: circuit-management
+data:
+  REACT_APP_API_URL: "https://api.yourdomain.com"
+  REACT_APP_ENV: "production"
