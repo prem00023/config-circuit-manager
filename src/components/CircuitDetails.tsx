@@ -27,6 +27,7 @@ export const CircuitDetails = ({ circuit, onBack, onUpdate }: CircuitDetailsProp
   const validateField = (field: string, value: string): string => {
     switch (field) {
       case 'client_ip':
+      case 'gateway':
         const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
         if (!ipRegex.test(value)) return 'Invalid IP address format';
         const parts = value.split('.');
@@ -80,8 +81,8 @@ export const CircuitDetails = ({ circuit, onBack, onUpdate }: CircuitDetailsProp
     
     const newErrors: Record<string, string> = {};
     
-    // Validate all editable fields including network configuration
-    const editableFields = ['client_name', 'vlan', 'bandwidth', 'location', 'mux_id', 'port_id', 'client_ip', 'subnet', 'dns'];
+    // Validate all editable fields including network configuration and gateway
+    const editableFields = ['client_name', 'vlan', 'bandwidth', 'location', 'mux_id', 'port_id', 'client_ip', 'subnet', 'dns', 'gateway'];
     editableFields.forEach(field => {
       const error = validateField(field, editedCircuit[field as keyof Circuit]);
       if (error) newErrors[field] = error;
@@ -239,12 +240,13 @@ export const CircuitDetails = ({ circuit, onBack, onUpdate }: CircuitDetailsProp
               <span>Network Configuration</span>
             </CardTitle>
             <CardDescription>
-              {isEditing ? 'IP and DNS settings (Editable)' : 'IP and DNS settings'}
+              {isEditing ? 'IP, DNS and Gateway settings (Editable)' : 'IP, DNS and Gateway settings'}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {renderField('Client IP Address', 'client_ip', <span className="w-4 h-4 bg-blue-100 rounded text-xs flex items-center justify-center">IP</span>, true)}
             {renderField('Subnet Mask', 'subnet', <span className="w-4 h-4 bg-orange-100 rounded text-xs flex items-center justify-center">S</span>, true)}
+            {renderField('Gateway', 'gateway', <span className="w-4 h-4 bg-purple-100 rounded text-xs flex items-center justify-center">G</span>, true)}
             {renderField('DNS Server', 'dns', <span className="w-4 h-4 bg-green-100 rounded text-xs flex items-center justify-center">D</span>, true)}
           </CardContent>
         </Card>

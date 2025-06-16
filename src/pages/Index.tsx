@@ -11,6 +11,7 @@ export type Circuit = {
   client_name: string;
   client_ip: string;
   subnet: string;
+  gateway: string;
   dns: string;
   vlan: string;
   bandwidth: string;
